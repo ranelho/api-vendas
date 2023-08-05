@@ -12,5 +12,7 @@ public interface ClienteAPI {
     @ResponseStatus(HttpStatus.CREATED)
     ClienteResponse newCliente(@Valid  @RequestBody ClienteRequest request);
 
-
+    @GetMapping("/{cpf}")
+    @ResponseStatus(HttpStatus.OK)
+    ClienteResponse getByCpf(@PathVariable("cpf") String cpf);
 }

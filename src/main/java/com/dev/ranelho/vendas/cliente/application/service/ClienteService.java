@@ -5,4 +5,5 @@ import com.dev.ranelho.vendas.cliente.application.api.ClienteResponse;
 
 public interface ClienteService {
     ClienteResponse newCLiente(ClienteRequest request);
+    ClienteResponse findByCpf(String cpf);
 }

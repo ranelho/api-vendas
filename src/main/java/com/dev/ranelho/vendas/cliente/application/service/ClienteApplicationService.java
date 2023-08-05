@@ -1,6 +1,5 @@
 package com.dev.ranelho.vendas.cliente.application.service;
 
-import com.dev.ranelho.vendas.cliente.application.api.ClienteAPI;
 import com.dev.ranelho.vendas.cliente.application.api.ClienteRequest;
 import com.dev.ranelho.vendas.cliente.application.api.ClienteResponse;
 import com.dev.ranelho.vendas.cliente.application.repository.ClienteRepository;
@@ -25,10 +24,23 @@ public class ClienteApplicationService implements ClienteService {
         log.info("[inicia] - ClienteApplicationService.ClienteResponse");
         Optional<Cliente> optionalCliente = clienteRepository.findByCpf(request.cpf());
         if(optionalCliente.isPresent()){
-            throw APIException.build(HttpStatus.BAD_REQUEST, "Cpf ja ultilizado!");
+            throw APIException.build(HttpStatus.BAD_REQUEST, "Cpf ja utilizado!");
         }
         Cliente cliente = clienteRepository.newCliente(new Cliente(request));
         log.info("[finaliza] - ClienteApplicationService.ClienteResponse");
         return new ClienteResponse(cliente);
+    }
+
+    @Override
+    public ClienteResponse findByCpf(String cpf) {
+        log.info("[inicia] - ClienteApplicationService.findByCpf");
+        Cliente cliente = getCliente(cpf);
+        log.info("[finaliza] - ClienteApplicationService.findByCpf");
+        return new ClienteResponse(cliente);
+    }
+
+    private Cliente getCliente(String cpf) {
+        return clienteRepository.findByCpf(cpf)
+                .orElseThrow(() -> APIException.build(HttpStatus.BAD_REQUEST, "Cliente não encontrado!"));
     }
 }
