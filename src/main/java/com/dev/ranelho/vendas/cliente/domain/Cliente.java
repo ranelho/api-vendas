@@ -18,7 +18,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "tb_vendas")
+@Table(name = "TB_CLIENTE")
 @EntityListeners(AuditingEntityListener.class)
 public class Cliente {
     @Id
@@ -32,6 +32,8 @@ public class Cliente {
     private LocalDateTime dataCadastro;
     @LastModifiedDate
     private LocalDateTime ultimaAtualizacao;
+
+    //TODO -> Contatos, Produto, venda.
 
     public Cliente(ClienteRequest request) {
         this.fullName = request.fullName().toUpperCase();
