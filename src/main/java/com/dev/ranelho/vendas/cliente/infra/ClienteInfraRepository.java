@@ -33,7 +33,7 @@ public class ClienteInfraRepository implements ClienteRepository {
     }
 
     @Override
-    public Optional<Cliente> findByCpf(String cpf) {
+    public Optional<Cliente> findClienteByCpf(String cpf) {
         log.info("[inicia] - ClienteInfraRepository.newCliente");
         Optional<Cliente> optionalCliente = jpaRepository.findByCpf(cpf);
         log.info("[finaliza] - ClienteInfraRepository.newCliente");

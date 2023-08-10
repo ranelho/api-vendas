@@ -9,10 +9,10 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface ClienteService {
-    ClienteResponse newCLiente(ClienteRequest request);
-    ClienteResponse findByCpf(String cpf);
+    ClienteResponse newCliente(ClienteRequest request);
+    ClienteResponse getClienteByCpf(String cpf);
     Page<ClienteResponse> getAllClientes(Pageable pageable);
     ClienteResponse updateCliente(String cpf, ClienteUpdateRequest updateRequest);
-    void delete(String cpf);
+    void deleteCliente(String cpf);
     List<ClienteResponse> getClienteByName(String name);
 }

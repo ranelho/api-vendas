@@ -12,7 +12,7 @@ import java.util.UUID;
 public interface ClienteRepository {
     Cliente salvaCliente(Cliente cliente);
 
-    Optional<Cliente> findByCpf(String cpf);
+    Optional<Cliente> findClienteByCpf(String cpf);
 
     Page<Cliente> getAllClientes(Pageable pageable);
 

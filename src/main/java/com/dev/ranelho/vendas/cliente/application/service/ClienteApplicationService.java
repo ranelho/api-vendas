@@ -5,16 +5,16 @@ import com.dev.ranelho.vendas.cliente.application.api.ClienteResponse;
 import com.dev.ranelho.vendas.cliente.application.api.ClienteUpdateRequest;
 import com.dev.ranelho.vendas.cliente.application.repository.ClienteRepository;
 import com.dev.ranelho.vendas.cliente.domain.Cliente;
-import com.dev.ranelho.vendas.handler.APIException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+
+import static com.dev.ranelho.vendas.handler.APIException.build;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @Service
 @RequiredArgsConstructor
@@ -24,11 +24,10 @@ public class ClienteApplicationService implements ClienteService {
     private final ClienteRepository clienteRepository;
 
     @Override
-    public ClienteResponse newCLiente(ClienteRequest request) {
+    public ClienteResponse newCliente(ClienteRequest request) {
         log.info("[inicia] - ClienteApplicationService.ClienteResponse");
-        Optional<Cliente> optionalCliente = clienteRepository.findByCpf(request.cpf());
-        if(optionalCliente.isPresent()){
-            throw APIException.build(HttpStatus.BAD_REQUEST, "Cpf ja utilizado!");
+        if (clienteRepository.findClienteByCpf(request.cpf()).isPresent()) {
+            throw build(BAD_REQUEST, "Cpf ja utilizado!");
         }
         var cliente = clienteRepository.salvaCliente(new Cliente(request));
         log.info("[finaliza] - ClienteApplicationService.ClienteResponse");
@@ -36,9 +35,9 @@ public class ClienteApplicationService implements ClienteService {
     }
 
     @Override
-    public ClienteResponse findByCpf(String cpf) {
+    public ClienteResponse getClienteByCpf(String cpf) {
         log.info("[inicia] - ClienteApplicationService.findByCpf");
-        Cliente cliente = getCliente(cpf);
+        Cliente cliente = validateAndGetClienteByCpf(cpf);
         log.info("[finaliza] - ClienteApplicationService.findByCpf");
         return new ClienteResponse(cliente);
     }
@@ -54,7 +53,7 @@ public class ClienteApplicationService implements ClienteService {
     @Override
     public ClienteResponse updateCliente(String cpf, ClienteUpdateRequest updateRequest) {
         log.info("[inicia] - ClienteApplicationService.getAllClientes");
-        Cliente cliente = getCliente(cpf);
+        Cliente cliente = validateAndGetClienteByCpf(cpf);
         cliente.update(updateRequest);
         clienteRepository.salvaCliente(cliente);
         log.info("[finaliza] - ClienteApplicationService.getAllClientes");
@@ -62,9 +61,9 @@ public class ClienteApplicationService implements ClienteService {
     }
 
     @Override
-    public void delete(String cpf) {
+    public void deleteCliente(String cpf) {
         log.info("[inicia] - ClienteApplicationService.getAllClientes");
-        clienteRepository.delete(getCliente(cpf).getIdCliente());
+        clienteRepository.delete(validateAndGetClienteByCpf(cpf).getIdCliente());
         log.info("[finaliza] - ClienteApplicationService.getAllClientes");
     }
 
@@ -76,8 +75,8 @@ public class ClienteApplicationService implements ClienteService {
         return ClienteResponse.converteList(clientes);
     }
 
-    private Cliente getCliente(String cpf) {
-        return clienteRepository.findByCpf(cpf)
-                .orElseThrow(() -> APIException.build(HttpStatus.BAD_REQUEST, "Cliente não encontrado!"));
+    private Cliente validateAndGetClienteByCpf(String cpf) {
+        return clienteRepository.findClienteByCpf(cpf)
+                .orElseThrow(() -> build(BAD_REQUEST, "Cliente não encontrado!"));
     }
 }

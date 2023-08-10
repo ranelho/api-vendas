@@ -19,24 +19,24 @@ public class ClienteRestController implements ClienteAPI {
     @Override
     public ClienteResponse newCliente(ClienteRequest request) {
         log.info("[inicia] - ClienteRestController.newCliente");
-        ClienteResponse response = clienteService.newCLiente(request);
+        ClienteResponse response = clienteService.newCliente(request);
         log.info("[finaliza] - ClienteRestController.newCliente");
         return response;
     }
 
     @Override
-    public ClienteResponse getByCpf(String cpf) {
-        log.info("[inicia] - ClienteRestController.newCliente");
-        ClienteResponse response = clienteService.findByCpf(cpf);
-        log.info("[finaliza] - ClienteRestController.newCliente");
+    public ClienteResponse getClienteByCpf(String cpf) {
+        log.info("[inicia] - ClienteRestController.getClienteByCpf");
+        ClienteResponse response = clienteService.getClienteByCpf(cpf);
+        log.info("[finaliza] - ClienteRestController.getClienteByCpf");
         return response;
     }
 
     @Override
     public Page<ClienteResponse> getAllClientes(Pageable pageable) {
-        log.info("[inicia] - ClienteRestController.newCliente");
+        log.info("[inicia] - ClienteRestController.getAllClientes");
         Page<ClienteResponse> list = clienteService.getAllClientes(pageable);
-        log.info("[finaliza] - ClienteRestController.newCliente");
+        log.info("[finaliza] - ClienteRestController.getAllClientes");
         return list;
     }
 
@@ -49,10 +49,10 @@ public class ClienteRestController implements ClienteAPI {
     }
 
     @Override
-    public void delete(String cpf) {
-        log.info("[inicia] - ClienteRestController.updateCliente");
-        clienteService.delete(cpf);
-        log.info("[finaliza] - ClienteRestController.updateCliente");
+    public void deleteCliente(String cpf) {
+        log.info("[inicia] - ClienteRestController.deleteCliente");
+        clienteService.deleteCliente(cpf);
+        log.info("[finaliza] - ClienteRestController.deleteCliente");
     }
 
     @Override

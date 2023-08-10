@@ -9,17 +9,16 @@ import java.util.List;
 
 import static org.springframework.http.HttpStatus.*;
 
-
 @RequestMapping("/v1/clientes")
 public interface ClienteAPI {
 
     @PostMapping
     @ResponseStatus(CREATED)
-    ClienteResponse newCliente(@Valid  @RequestBody ClienteRequest request);
+    ClienteResponse newCliente(@Valid @RequestBody ClienteRequest request);
 
     @GetMapping("/{cpf}")
     @ResponseStatus(OK)
-    ClienteResponse getByCpf(@PathVariable("cpf") String cpf);
+    ClienteResponse getClienteByCpf(@PathVariable("cpf") String cpf);
 
     @GetMapping()
     @ResponseStatus(OK)
@@ -31,7 +30,7 @@ public interface ClienteAPI {
 
     @DeleteMapping("/{cpf}")
     @ResponseStatus(NO_CONTENT)
-    void delete(@PathVariable("cpf") String cpf);
+    void deleteCliente(@PathVariable("cpf") String cpf);
 
     @GetMapping("/nome/{name}")
     @ResponseStatus(OK)
