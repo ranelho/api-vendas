@@ -1,8 +1,10 @@
 package com.dev.ranelho.vendas.cliente.application.api;
 
 import jakarta.validation.Valid;
+import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,6 +12,7 @@ import java.util.List;
 import static org.springframework.http.HttpStatus.*;
 
 @RequestMapping("/v1/clientes")
+@Validated
 public interface ClienteAPI {
 
     @PostMapping
@@ -18,7 +21,7 @@ public interface ClienteAPI {
 
     @GetMapping("/{cpf}")
     @ResponseStatus(OK)
-    ClienteResponse getClienteByCpf(@PathVariable("cpf") String cpf);
+    ClienteResponse getClienteByCpf(@PathVariable("cpf") @CPF(message = "CPF inválido!") String cpf);
 
     @GetMapping()
     @ResponseStatus(OK)
@@ -26,11 +29,12 @@ public interface ClienteAPI {
 
     @PutMapping("/{cpf}")
     @ResponseStatus(OK)
-    ClienteResponse updateCliente(@PathVariable("cpf") String cpf, @RequestBody ClienteUpdateRequest updateRequest);
+    ClienteResponse updateCliente(@PathVariable("cpf") @CPF(message = "CPF inválido!") String cpf,
+                                  @RequestBody ClienteUpdateRequest updateRequest);
 
     @DeleteMapping("/{cpf}")
     @ResponseStatus(NO_CONTENT)
-    void deleteCliente(@PathVariable("cpf") String cpf);
+    void deleteCliente(@PathVariable("cpf") @CPF(message = "CPF inválido!") String cpf);
 
     @GetMapping("/nome/{name}")
     @ResponseStatus(OK)
