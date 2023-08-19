@@ -13,20 +13,20 @@ public record ClienteResponse(
     public ClienteResponse(Cliente cliente) {
         this(cliente.getFullName(), formatarCpf(cliente.getCpf()), cliente.getDataCadastro(), cliente.getUltimaAtualizacao());
     }
-
     public static Page<ClienteResponse> convertePage(Page<Cliente> clientes) {
-        List<ClienteResponse> clienteResponses = clientes.getContent().stream()
-                .map(cliente -> new ClienteResponse(cliente.getFullName(),formatarCpf(cliente.getCpf()), cliente.getDataCadastro(),
-                        cliente.getUltimaAtualizacao()))
-                .toList();
-        return new PageImpl<>(clienteResponses, clientes.getPageable(), clientes.getTotalElements());
+        return new PageImpl<>(
+            clientes.get().map(c -> new ClienteResponse(c.getFullName(), formatarCpf(c.getCpf()),
+                            c.getDataCadastro(), c.getUltimaAtualizacao()))
+                    .toList(),
+            clientes.getPageable(),
+            clientes.getTotalElements()
+        );
     }
-
     public static List<ClienteResponse> converteList(List<Cliente> clientes) {
         return clientes.stream()
-                .map(cliente -> new ClienteResponse(cliente.getFullName(),formatarCpf(cliente.getCpf()), cliente.getDataCadastro(),
-                        cliente.getUltimaAtualizacao()))
-                .toList();
+            .map(c -> new ClienteResponse(c.getFullName(),formatarCpf(c.getCpf()), c.getDataCadastro(),
+                    c.getUltimaAtualizacao()))
+            .toList();
     }
     private static String formatarCpf(String cpf) {
         String parte1 = cpf.substring(0, 3);

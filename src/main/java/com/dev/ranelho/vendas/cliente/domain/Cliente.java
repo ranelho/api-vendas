@@ -3,9 +3,7 @@ package com.dev.ranelho.vendas.cliente.domain;
 import com.dev.ranelho.vendas.cliente.application.api.ClienteRequest;
 import com.dev.ranelho.vendas.cliente.application.api.ClienteUpdateRequest;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -15,10 +13,11 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@Table(name = "TB_CLIENTE")
+@Entity(name = "clientes")
+@Table(name = "clientes")
 @EntityListeners(AuditingEntityListener.class)
 public class Cliente {
     @Id
@@ -32,8 +31,6 @@ public class Cliente {
     private LocalDateTime dataCadastro;
     @LastModifiedDate
     private LocalDateTime ultimaAtualizacao;
-
-    //TODO -> Contatos, Produto, venda.
 
     public Cliente(ClienteRequest request) {
         this.fullName = request.fullName().toUpperCase();
